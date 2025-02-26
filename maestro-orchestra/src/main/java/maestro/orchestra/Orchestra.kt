@@ -311,6 +311,7 @@ class Orchestra(
             is SetAirplaneModeCommand -> setAirplaneMode(command)
             is ToggleAirplaneModeCommand -> toggleAirplaneMode()
             is RetryCommand -> retryCommand(command, config)
+            is SleepCommand -> sleepCommand(command)
             else -> true
         }.also { mutating ->
             if (mutating) {
@@ -470,6 +471,11 @@ class Orchestra(
         return true
     }
 
+    private fun sleepCommand(command: SleepCommand): Boolean {
+        maestro.sleep(command.time)
+        return true
+    }
+    
     private fun defineVariablesCommand(command: DefineVariablesCommand): Boolean {
         command.env.forEach { (name, value) ->
             jsEngine.putEnv(name, value)
